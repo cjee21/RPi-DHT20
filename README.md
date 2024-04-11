@@ -5,7 +5,7 @@ Raspberry Pi Python library for DHT20 Temperature and Humidity Sensor with CRC v
 This library was tested with the following:
 - Aosong DHT20 SIP Packaged Temperature and Humidity Sensor
 - Raspberry Pi 3 Model B
-- Ubuntu Server 22.10 and 23.04
+- Ubuntu Server 22.10, 23.04 and 23.10
 
 Similar configurations should also work.
 
