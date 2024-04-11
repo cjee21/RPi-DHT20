@@ -48,17 +48,15 @@ logger = logging.getLogger(__name__)
 class DFRobot_DHT20(object):
   ''' Conversion data '''
 
-  _addr      =  0x50
 
-  def __init__(self,bus,address):
+  def __init__(self, bus: int, address: int) -> None:
     self.i2cbus = smbus.SMBus(bus)
     self._addr = address
-    self.idle =    0
 
 
   # Sensor initialization function
   # @return Return True if initialization succeeds, otherwise return False.
-  def begin(self):
+  def begin(self) -> bool:
 
     # after power-on, wait no less than 100ms
     time.sleep(0.5)
@@ -73,7 +71,7 @@ class DFRobot_DHT20(object):
 
   # Get both temperature and humidity in a single read
   # @return Return temperature (C), humidity (%) and CRC result (True if error else False) as tuple
-  def get_temperature_and_humidity(self):
+  def get_temperature_and_humidity(self) -> tuple[float, float, bool]:
 
     # trigger measurement
     self.write_reg(0xac,[0x33,0x00])
@@ -89,13 +87,13 @@ class DFRobot_DHT20(object):
     data = self.read_reg(0x71,7)
 
     # extract and convert temperature and humidity from data
-    temperature_rawData = ((data[3]&0xf) << 16) + (data[4] << 8) + data[5]
-    humidity_rawData = ((data[3]&0xf0) >> 4) + (data[1] << 12) + (data[2] << 4)
-    temperature = float(temperature_rawData) / 5242.88 - 50
-    humidity = float(humidity_rawData) / 0x100000 * 100
+    temperature_rawData: int = ((data[3]&0xf) << 16) + (data[4] << 8) + data[5]
+    humidity_rawData: int = ((data[3]&0xf0) >> 4) + (data[1] << 12) + (data[2] << 4)
+    temperature: float = float(temperature_rawData) / 5242.88 - 50
+    humidity: float = float(humidity_rawData) / 0x100000 * 100
 
     # check CRC
-    crc_error = self.calc_CRC8(data) != data[6]
+    crc_error: bool = self.calc_CRC8(data) != data[6]
 
     # debug logging
     if logger.isEnabledFor(logging.DEBUG):
@@ -112,9 +110,9 @@ class DFRobot_DHT20(object):
   # CRC function
   # @param message - data from sensor which its CRC-8 is to be calculated
   # @return Return calculated CRC-8
-  def calc_CRC8(self,data):
+  def calc_CRC8(self, data: list[int]) -> int:
 
-    crc = 0xFF
+    crc: int = 0xFF
 
     for i in data[:-1]:
       crc ^= i
@@ -127,13 +125,13 @@ class DFRobot_DHT20(object):
     return (crc & 0xFF)
 
   
-  def write_reg(self,reg,data):
+  def write_reg(self, reg: int, data: list[int]) -> None:
     time.sleep(0.01)
     self.i2cbus.write_i2c_block_data(self._addr,reg,data)
   
   
-  def read_reg(self,reg,len):
+  def read_reg(self, reg: int, len: int) -> list[int]:
     time.sleep(0.01)
-    rslt = self.i2cbus.read_i2c_block_data(self._addr,reg,len)
+    rslt: list[int] = self.i2cbus.read_i2c_block_data(self._addr,reg,len)
     #print(rslt)
     return rslt
