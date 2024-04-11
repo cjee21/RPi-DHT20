@@ -7,10 +7,10 @@ from DFRobot_DHT20 import DFRobot_DHT20
 
 # The first  parameter is to select i2c0 or i2c1
 # The second parameter is the i2c device address
-I2C_BUS     = 0x01  # default use I2C1 bus
-I2C_ADDRESS = 0x38  # default I2C device address
+I2C_BUS: int     = 0x01  # default use I2C1 bus
+I2C_ADDRESS: int = 0x38  # default I2C device address
 
-dht20 = DFRobot_DHT20(I2C_BUS ,I2C_ADDRESS)
+dht20 = DFRobot_DHT20(I2C_BUS, I2C_ADDRESS)
 
 # Initialize sensor
 if not dht20.begin():
@@ -23,7 +23,7 @@ else:
     if crc_error:
       print("CRC               : Error\n")
     else:
-      T_fahrenheit = T_celcius*9/5 + 32
+      T_fahrenheit: float = T_celcius*9/5 + 32
       print("Temperature       : %f\u00b0C / %f\u00b0F" %(T_celcius, T_fahrenheit))
       print("Relative Humidity : %f %%" %humidity)
       print("CRC               : OK\n")
