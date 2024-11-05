@@ -27,4 +27,4 @@ else:
       print("Temperature       : %f\u00b0C / %f\u00b0F" %(T_celcius, T_fahrenheit))
       print("Relative Humidity : %f %%" %humidity)
       print("CRC               : OK\n")
-      sleep(5)
+    sleep(5)
