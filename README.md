@@ -5,7 +5,7 @@ Raspberry Pi Python library for DHT20 Temperature and Humidity Sensor with CRC v
 This library was tested with the following:
 - Aosong DHT20 SIP Packaged Temperature and Humidity Sensor
 - Raspberry Pi 3 Model B
-- Ubuntu Server 22.10, 23.04, 23.10 and 24.04 LTS
+- Ubuntu Server 22.10, 23.04, 23.10, 24.04 LTS and 26.04 LTS
 
 Similar configurations should also work.
 
@@ -13,9 +13,12 @@ Similar configurations should also work.
 1. Connect the DHT20 sensor to the Raspberry Pi\
 *Note: If a different Raspberry Pi model and/or operating system is used, it may be necessary to change the `I2C_BUS` in `DHT20_demo.py` and/or enable the I<sup>2</sup>C interface.*
 
-2. Install smbus2 Python module that is used for accessing the I<sup>2</sup>C bus
+2. Install smbus2 Python module that is used for accessing the I<sup>2</sup>C bus\
+*Note: Virtual environment is used as `python3-smbus2` in Ubuntu is outdated and does not work with the Python version included in Ubuntu.*
    ```
-   sudo apt install python3-smbus2
+   sudo apt install python3-venv
+   python3 -m venv venv
+   ./venv/bin/pip install smbus2
    ```
 3. If `/dev/i2c*` does not exist, enable the i2c-dev kernel module by adding the following line to the `/etc/modules` file
    ```
@@ -23,7 +26,7 @@ Similar configurations should also work.
    ```
 4. Test by running the demo
    ```
-   sudo python3 DHT20_demo.py
+   sudo ./venv/bin/python DHT20_demo.py
    ```
 
 ## Usage
